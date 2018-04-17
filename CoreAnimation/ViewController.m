@@ -205,6 +205,31 @@
     [testView.layer addAnimation:animation forKey:@"mineCATransition"];
 }
 
+- (void)mineCAAnimationGroup
+{
+    CAAnimationGroup *animation = [CAAnimationGroup animation];
+    
+    //subAnimatoin - first
+    CABasicAnimation *animationF = [CABasicAnimation animation];
+    animationF.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+    animationF.removedOnCompletion = YES; //是否恢复状态
+    animationF.fromValue = [NSNumber numberWithFloat:2.];    //初始值
+    animationF.toValue = [NSNumber numberWithFloat:.5];          //动画目标值
+    
+    //subAnimation - sec
+    //贝塞尔曲线路径
+    UIBezierPath *movePath = [UIBezierPath bezierPath];
+    [movePath moveToPoint:CGPointMake(10.0, 10.0)];
+     [movePath addQuadCurveToPoint:CGPointMake(100, 300) controlPoint:CGPointMake(300, 100)];
+    
+    CAKeyframeAnimation * animationS = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+    animationS.path = movePath.CGPath;
+    animationS.removedOnCompletion = YES;
+    
+    animation.animations = @[animationF,animationS];
+    [testView.layer addAnimation:animation forKey:@"mineCAAnimationGroup"];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
